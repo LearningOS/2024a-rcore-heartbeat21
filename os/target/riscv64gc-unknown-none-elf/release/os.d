@@ -1,0 +1,1 @@
+/home/gujiachen/2024a-rcore-heartbeat21/os/target/riscv64gc-unknown-none-elf/release/os: /home/gujiachen/2024a-rcore-heartbeat21/os/src/console.rs /home/gujiachen/2024a-rcore-heartbeat21/os/src/entry.asm /home/gujiachen/2024a-rcore-heartbeat21/os/src/lang_items.rs /home/gujiachen/2024a-rcore-heartbeat21/os/src/main.rs /home/gujiachen/2024a-rcore-heartbeat21/os/src/sbi.rs
