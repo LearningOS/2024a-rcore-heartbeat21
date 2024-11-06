@@ -10,6 +10,7 @@ global_asm!(include_str!("entry.asm"));
 #[no_mangle]
 pub fn rust_main() -> ! {
     clear_bss();
+    print_os();
     print!("Hello, World!\n");
     panic!("Shutdown machine!");
 }
@@ -19,20 +20,27 @@ fn clear_bss() {
         fn sbss();
         fn ebss();
     }
-    (sbss as usize..ebss as usize).for_each(|a| {
-        unsafe { (a as *mut u8).write_volatile(0) }
-    });
+    (sbss as usize..ebss as usize).for_each(|a| unsafe { (a as *mut u8).write_volatile(0) });
 }
 
-fn printOS() {
-    extern  "C" {
+fn print_os() {
+    extern "C" {
         static stext: u8;
         static etext: u8;
         static srodata: u8;
-        static edata: u8;
+        static erodata: u8;
+        fn sdata();
+        fn edata();
+        fn sbss();
+        fn ebss();
+        static skernel: u8;
+        static ekernel: u8;
     }
-    info!(".text [{:#x}, {:#x})", stext as usize, etext as usize);
-    info!(".rodata [{:#x}, {:#x})", s_rodata as usize, e_rodata as usize);
-    info!(".data [{:#x}, {:#x})", s_data as usize, e_data as usize);
-    info!("load range : [%d, %d] start = %d\n", s, e, start);
+    unsafe {
+        info!(".text [{:#x}, {:#x})", stext as usize, etext as usize);
+        info!(".rodata [{:#x}, {:#x})", srodata as usize, erodata as usize);
+        info!(".data [{:#x}, {:#x})", sdata as usize, edata as usize);
+        info!(".bss [{:#x}, {:#x})", sbss as usize, ebss as usize);
+        info!("load range : [{:#x}, {:#x}] start = {:#x}\n", skernel as usize, ekernel as usize, ekernel as usize);
+    }
 }
